@@ -17,3 +17,19 @@ DataBusiness.getCharacters().then((characters) => {
     document.getElementById("root").append(row);
   }
 });
+
+DataBusiness.getEpisodes().then((episodes) => {
+  const rows = [];
+
+  for (let episode of episodes) {
+    const row = Utils.createEpisodeRow(episode);
+    row.onclick = function () {
+      Utils.showEpisode(episode);
+    };
+    rows.push(row);
+  }
+
+  for (let row of rows) {
+    document.getElementById("episode").append(row);
+  }
+});

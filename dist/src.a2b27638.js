@@ -1959,6 +1959,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getCharacters = getCharacters;
+exports.getEpisodes = getEpisodes;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -1972,13 +1973,22 @@ function getCharacters() {
     return myPromise;
   });
 }
+
+function getEpisodes() {
+  return _axios.default.get("https://breakingbadapi.com/api/episodes").then(function (response) {
+    var myPromise = new Promise(function (resolve) {
+      resolve(response.data);
+    });
+    return myPromise;
+  });
+}
 },{"axios":"node_modules/axios/index.js"}],"src/utils.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.showCharacter = exports.createCharacterRow = void 0;
+exports.showEpisode = exports.createEpisodeRow = exports.showCharacter = exports.createCharacterRow = void 0;
 
 var createCharacterRow = function createCharacterRow(character) {
   var element = document.createElement("div");
@@ -2030,6 +2040,34 @@ var createParagraph = function createParagraph(text) {
   element.append(text);
   return element;
 };
+
+var createEpisodeRowText = function createEpisodeRowText(episode) {
+  var element = document.createElement("span");
+  element.append(episode.episode_id + " ");
+  element.append(episode.title);
+  return element;
+};
+
+var createEpisodeRow = function createEpisodeRow(episode) {
+  var element = document.createElement("div");
+  var link = createEpisodeRowText(episode);
+  element.appendChild(link);
+  element.className = "episode-row";
+  return element;
+};
+
+exports.createEpisodeRow = createEpisodeRow;
+
+var showEpisode = function showEpisode(episode) {
+  console.log("episode", episode);
+  var episodeDetail = document.getElementById("episode-detail");
+  episodeDetail.innerHTML = "";
+  episodeDetail.appendChild(createParagraph("Title: " + episode.title));
+  episodeDetail.appendChild(createParagraph("Season: " + episode.season));
+  episodeDetail.appendChild(createParagraph("Air Date: " + episode.air_date));
+};
+
+exports.showEpisode = showEpisode;
 },{}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
@@ -2081,6 +2119,38 @@ DataBusiness.getCharacters().then(function (characters) {
     document.getElementById("root").append(row);
   }
 });
+DataBusiness.getEpisodes().then(function (episodes) {
+  var rows = [];
+
+  var _iterator2 = _createForOfIteratorHelper(episodes),
+      _step2;
+
+  try {
+    var _loop2 = function _loop2() {
+      var episode = _step2.value;
+      var row = Utils.createEpisodeRow(episode);
+
+      row.onclick = function () {
+        Utils.showEpisode(episode);
+      };
+
+      rows.push(row);
+    };
+
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      _loop2();
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+
+  for (var _i2 = 0, _rows2 = rows; _i2 < _rows2.length; _i2++) {
+    var row = _rows2[_i2];
+    document.getElementById("episode").append(row);
+  }
+});
 },{"./styles.css":"src/styles.css","./data-business.js":"src/data-business.js","./utils.js":"src/utils.js"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -2109,7 +2179,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55579" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64725" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -49,4 +49,28 @@ const createParagraph = (text) => {
   return element;
 };
 
-export { createCharacterRow, showCharacter };
+const createEpisodeRowText = (episode) => {
+  const element = document.createElement("span");
+  element.append(episode.episode_id + " ");
+  element.append(episode.title);
+  return element;
+};
+
+const createEpisodeRow = (episode) => {
+  const element = document.createElement("div");
+  const link = createEpisodeRowText(episode);
+  element.appendChild(link);
+  element.className = "episode-row";
+  return element;
+};
+
+const showEpisode = (episode) => {
+  console.log("episode", episode);
+  const episodeDetail = document.getElementById("episode-detail");
+  episodeDetail.innerHTML = "";
+  episodeDetail.appendChild(createParagraph("Title: " + episode.title));
+  episodeDetail.appendChild(createParagraph("Season: " + episode.season));
+  episodeDetail.appendChild(createParagraph("Air Date: " + episode.air_date));
+};
+
+export { createCharacterRow, showCharacter, createEpisodeRow, showEpisode };
